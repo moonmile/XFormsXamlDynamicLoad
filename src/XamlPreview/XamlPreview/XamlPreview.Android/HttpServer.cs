@@ -37,7 +37,7 @@ namespace XamlPreview.Droid
                     var sr = new System.IO.StreamReader(context.Request.InputStream);
                     var text = sr.ReadToEnd();
                     sr.Close();
-                    OnRecv?.Invoke(text);
+                    OnRecv?.Invoke(context.Request.Url.PathAndQuery, text);
                     HttpListenerResponse res = context.Response;
                     res.StatusCode = 200;
                     byte[] content = System.Text.Encoding.UTF8.GetBytes("OK");
@@ -46,7 +46,7 @@ namespace XamlPreview.Droid
                 }
             });
         }
-        public event Action<string> OnRecv;
+        public event Action<string, string> OnRecv;
 
         public string GetUrl()
         {

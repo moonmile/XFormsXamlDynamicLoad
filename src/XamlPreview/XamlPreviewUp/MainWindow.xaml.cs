@@ -37,24 +37,38 @@ namespace XamlPreviewUp
             if ( files != null )
             {
                 var file = files[0];
+
                 if ( file.ToLower().EndsWith(".xaml"))
                 {
                     xamlPath = file;
                     btn1.Content = System.IO.Path.GetFileName(xamlPath);
-                    var url = string.Format("http://{0}:{1}/", textIp.Text, 8080);
+                    var url = string.Format("http://{0}:{1}/api/xaml", textIp.Text, 8080);
                     upload(url, xamlPath);
-
+                }
+                if (file.ToLower().EndsWith(".json"))
+                {
+                    jsonPath = file;
+                    var url = string.Format("http://{0}:{1}/api/json", textIp.Text, 8080);
+                    upload(url, jsonPath);
                 }
             }
         }
         private void btn1_Click(object sender, RoutedEventArgs e)
         {
-            if (xamlPath == "") return;
-            var url = string.Format("http://{0}:{1}/", textIp.Text, 8080);
-            upload(url, xamlPath);
+            if (xamlPath != "")
+            {
+                var url = string.Format("http://{0}:{1}/api/xaml", textIp.Text, 8080);
+                upload(url, xamlPath);
+            }
+            if (jsonPath != "")
+            {
+                var url = string.Format("http://{0}:{1}/api/json", textIp.Text, 8080);
+                upload(url, jsonPath);
+            }
         }
 
         private string xamlPath = "";
+        private string jsonPath = "";       // デザイン時のデータバインディング用
 
         async void upload(string url, string path)
         {
@@ -63,6 +77,7 @@ namespace XamlPreviewUp
                 var fs = System.IO.File.OpenRead(path);
                 var sr = new System.IO.StreamReader(fs);
                 var xaml = sr.ReadToEnd();
+                sr.Close();
                 var hc = new HttpClient();
                 var cont = new StringContent(xaml);
                 var res = await hc.PostAsync(url, cont);

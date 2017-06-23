@@ -10,8 +10,7 @@ namespace XamlPreview
     {
         void PrefixesAdd(string url);
         void Start();
-        event Action<string> OnRecv;
-
+        event Action<string, string> OnRecv;
         string GetUrl();
     }
 }

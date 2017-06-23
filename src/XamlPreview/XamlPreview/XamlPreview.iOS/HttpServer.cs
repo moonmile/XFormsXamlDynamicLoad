@@ -29,7 +29,7 @@ namespace XamlPreview.iOS
                     HttpListenerContext context = listener.GetContext();
                     var sr = new System.IO.StreamReader(context.Request.InputStream);
                     var text = sr.ReadToEnd();
-                    OnRecv?.Invoke(text);
+                    OnRecv?.Invoke(context.Request.Url.PathAndQuery, text);
 
                     HttpListenerResponse res = context.Response;
                     res.StatusCode = 200;
@@ -39,7 +39,7 @@ namespace XamlPreview.iOS
                 }
             });
         }
-        public event Action<string> OnRecv;
+        public event Action<string, string> OnRecv;
 
         public string GetUrl()
         {

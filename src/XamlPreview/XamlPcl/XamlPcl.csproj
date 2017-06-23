@@ -102,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Page2.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Page1.xaml">
@@ -143,6 +144,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="OneShotDateTimePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Page2.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

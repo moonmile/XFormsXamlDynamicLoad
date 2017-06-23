@@ -32,23 +32,33 @@ namespace XamlPreview
 
         }
 
-        int _cnt = 0;
-        private void Sv_OnRecv(string xaml)
+        dynamic jsonVM;
+
+        private void Sv_OnRecv(string url, string text)
         {
-            ContentPage page = new SubPage();
-            try
+            if (url == "/api/xaml")
             {
-                page.LoadFromXaml(xaml);
+
+                ContentPage page = new SubPage();
+                try
+                {
+                    page.LoadFromXaml(text);
+                }
+                catch
+                {
+                    page = new ErrorPage();
+                }
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    Navigation.PopToRootAsync();
+                    // page.BindingContext = jsonVM;
+                    Navigation.PushAsync(page);
+                });
             }
-            catch
+            if ( url == "/api/json")
             {
-                page = new ErrorPage();
+                jsonVM = Newtonsoft.Json.Linq.JObject.Parse(text);
             }
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                Navigation.PopToRootAsync();
-                Navigation.PushAsync(page);
-            });
         }
     }
 
@@ -56,7 +66,23 @@ namespace XamlPreview
     /// ダミーのContentPage
     /// </summary>
     public class SubPage : ContentPage {
-        public SubPage() { }
+        public SubPage() {
+
+            // var vm = new SubViewModel() { Name = "masuda", Age = 99 };
+            // this.BindingContext = vm;
+            var text = @"{ Name: 'masuda', Age: 49 }";
+            dynamic vm = Newtonsoft.Json.Linq.JObject.Parse(text);
+
+            // dynamic vm = new { Name= "masuda", Age= 10 };
+            this.BindingContext = vm;
+
+        }
+    }
+
+    public class SubViewModel
+    {
+        public string Name { get; set; }
+        public int Age { get; set; }
     }
 
     /// <summary>
