@@ -66,23 +66,7 @@ namespace XamlPreview
     /// ダミーのContentPage
     /// </summary>
     public class SubPage : ContentPage {
-        public SubPage() {
-
-            // var vm = new SubViewModel() { Name = "masuda", Age = 99 };
-            // this.BindingContext = vm;
-            var text = @"{ Name: 'masuda', Age: 49 }";
-            dynamic vm = Newtonsoft.Json.Linq.JObject.Parse(text);
-
-            // dynamic vm = new { Name= "masuda", Age= 10 };
-            this.BindingContext = vm;
-
-        }
-    }
-
-    public class SubViewModel
-    {
-        public string Name { get; set; }
-        public int Age { get; set; }
+        public SubPage() { }
     }
 
     /// <summary>
